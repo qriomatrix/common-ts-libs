@@ -15,7 +15,7 @@ jobs:
       matrix:
         accounts: [ { account: dev, id: 980692338090 } ]
 
-    uses: https://github.com/qriomatrix/qriomatrix-reusable-github-workflows/blob/main/.github/workflows/npm-publish-lib-template.yml
+    uses: qriomatrix/qriomatrix-reusable-github-workflows/.github/workflows/npm-publish-lib-template.yml@v1.0.0
     with:
       AWS_ACCOUNT_ID: ${{ matrix.accounts.id }}
       REPOSITORY: 'common-ts-libs'
