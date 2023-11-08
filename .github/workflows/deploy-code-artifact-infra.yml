@@ -1,0 +1,51 @@
+on:
+  workflow_dispatch:
+
+jobs:
+
+  terraform_lower:
+    name: Deploy infrastructure to lower environments
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        accounts: [ { account: dev, id: 980692338090 } ]
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.CDK_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CDK_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.PRIMARY_REGION }}
+          role-to-assume: "arn:aws:iam::${{matrix.accounts.id}}:role/system/xac-eng-role"
+          role-session-name: GitHubActionSession
+          role-chaining: true
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Create Terraform Plan Artifact for Apply
+        working-directory: infrastructure/code-artifact
+        run: |
+          terraform init
+          terraform workspace select -or-create=true "qm-${{ matrix.accounts.account }}"
+          terraform plan -out "tfplan.${{ matrix.accounts.account }}"
+
+      - name: Upload Terraform Plan Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "TerraformPlan.${{ matrix.accounts.account }}"
+          path: "infrastructure/code-artifact/tfplan.${{ matrix.accounts.account }}"
+          retention-days: 1
+
+      - name: Apply Terraform Plan
+        working-directory: infrastructure/code-artifact
+        run: |
+          terraform apply "tfplan.${{ matrix.accounts.account }}"
