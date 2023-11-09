@@ -1,0 +1,25 @@
+name: Publish Qrio Qr Library - @common-ts-libs/qr-code-generator
+run-name: Publish Qrio Qr Library
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/qr-code-generator/**'
+
+jobs:
+  publish_lib:
+    strategy:
+      fail-fast: false
+      matrix:
+        accounts: [ { account: dev, id: 980692338090 } ]
+
+    uses: https://github.com/qriomatrix/qriomatrix-reusable-github-workflows/blob/main/.github/workflows/npm-publish-lib-template.yml
+    with:
+      AWS_ACCOUNT_ID: ${{ matrix.accounts.id }}
+      REPOSITORY: 'common-ts-libs'
+      WORKING_DIRECTORY: 'backend/qr-code-generator'
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.CDK_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.CDK_AWS_SECRET_ACCESS_KEY }}

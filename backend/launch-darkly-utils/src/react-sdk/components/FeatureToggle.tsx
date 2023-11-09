@@ -58,4 +58,4 @@ const FeatureToggle: React.FC<FeatureToggleProps> = ({
   }, [client, context, flagKey, onFlagChange]); // Add onFlagChange to dependency array
   return <>{flags[flagKey] ? children : fallback}</>;
 };
-export default FeatureToggle;
+export { FeatureToggle};
