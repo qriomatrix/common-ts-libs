@@ -58,4 +58,4 @@ const QrioQr: React.FC<QrioQrProps> = ({url, getQR, imageSettings, size}) => {
   );
 };
 
-export default {QrioQr};
+export {QrioQr};
