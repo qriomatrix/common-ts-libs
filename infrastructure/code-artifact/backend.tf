@@ -5,6 +5,6 @@ terraform {
     key            = "terraform/code-artifact/terraform.tfstate"
     dynamodb_table = "qm-terraform-tfstate-lock"
     region         = "us-east-1"
-    profile        = "qm-mgt"
+    profile        = "qm-dev"
   }
 }
