@@ -24,7 +24,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.PRIMARY_REGION }}
-          role-to-assume: "arn:aws:iam::${{matrix.accounts.id}}:role/system/xac-eng-role"
           role-session-name: GitHubActionSession
           role-chaining: true
 
