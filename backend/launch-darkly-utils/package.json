@@ -1,6 +1,6 @@
 {
   "name": "@common-ts-libs/launch-darkly-utils",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "Launch Darkly wrapper library",
   "main": "dist/index.js",
   "scripts": {
